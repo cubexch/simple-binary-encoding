@@ -1388,7 +1388,7 @@ public class RustGenerator implements CodeGenerator
         indent(out, 1, "#[derive(Debug, Default)]\n");
         indent(out, 1, "pub struct %s<P> {\n", encoderName);
         indent(out, 2, "parent: Option<P>,\n");
-        indent(out, 2, "offset: usize,\n");
+        indent(out, 2, "pub(crate) offset: usize,\n");
         indent(out, 1, "}\n\n");
 
         appendImplWriterForComposite(out, 1, encoderName);
@@ -1449,7 +1449,7 @@ public class RustGenerator implements CodeGenerator
         indent(out, 1, "#[derive(Debug, Default)]\n");
         indent(out, 1, "pub struct %s<P> {\n", decoderName);
         indent(out, 2, "parent: Option<P>,\n");
-        indent(out, 2, "offset: usize,\n");
+        indent(out, 2, "pub(crate) offset: usize,\n");
         indent(out, 1, "}\n\n");
 
         appendImplReaderForComposite(out, 1, decoderName);
