@@ -140,7 +140,7 @@ class MessageCoderDef implements RustGenerator.ParentDef
 
     void appendMessageHeaderDecoderFn(final Appendable out) throws IOException
     {
-        indent(out, 2, "pub fn header(self, mut header: MessageHeaderDecoder<ReadBuf<'a>>) -> Self {\n");
+        indent(out, 2, "pub fn header(self, mut header: MessageHeaderDecoder<ReadBuf<'a>>) -> Option<Self> {\n");
         indent(out, 3, "debug_assert_eq!(SBE_TEMPLATE_ID, header.template_id());\n");
         indent(out, 3, "let acting_block_length = header.block_length();\n");
         indent(out, 3, "let acting_version = header.version();\n\n");
@@ -187,8 +187,11 @@ class MessageCoderDef implements RustGenerator.ParentDef
             indent(out, 3, "offset: usize,\n");
             indent(out, 3, "acting_block_length: %s,\n", blockLengthType());
             indent(out, 3, "acting_version: %s,\n", schemaVersionType());
-            indent(out, 2, ") -> Self {\n");
+            indent(out, 2, ") -> Option<Self> {\n");
             indent(out, 3, "let limit = offset + acting_block_length as usize;\n");
+            indent(out, 3, "if limit > buf.data.len() {\n");
+            indent(out, 4, "return None;\n");
+            indent(out, 3, "}\n");
         }
         else
         {
@@ -205,8 +208,12 @@ class MessageCoderDef implements RustGenerator.ParentDef
         {
             indent(out, 3, "self.acting_block_length = acting_block_length;\n");
             indent(out, 3, "self.acting_version = acting_version;\n");
+            indent(out, 3, "Some(self)\n");
         }
-        indent(out, 3, "self\n");
+        else
+        {
+            indent(out, 3, "self\n");
+        }
         indent(out, 2, "}\n\n");
     }
 

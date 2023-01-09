@@ -151,7 +151,7 @@ class LibRsDef
     {
         indent(writer, 0, "#[derive(Clone, Copy, Debug, Default)]\n");
         indent(writer, 0, "pub struct %s<%s> {\n", READ_BUF_TYPE, BUF_LIFETIME);
-        RustUtil.indent(writer, 1, "data: &%s [u8],\n", BUF_LIFETIME);
+        RustUtil.indent(writer, 1, "pub(crate) data: &%s [u8],\n", BUF_LIFETIME);
         indent(writer, 0, "}\n");
 
         // impl Reader...
@@ -215,7 +215,7 @@ class LibRsDef
         indent(writer, 0, "\n");
         indent(writer, 0, "#[derive(Debug, Default)]\n");
         indent(writer, 0, "pub struct %s<%s> {\n", WRITE_BUF_TYPE, BUF_LIFETIME);
-        indent(writer, 1, "data: &%s mut [u8],\n", BUF_LIFETIME);
+        indent(writer, 1, "pub(crate) data: &%s mut [u8],\n", BUF_LIFETIME);
         indent(writer, 0, "}\n");
 
         indent(writer, 0, "impl<%s> %s<%s> {\n", BUF_LIFETIME, WRITE_BUF_TYPE, BUF_LIFETIME);

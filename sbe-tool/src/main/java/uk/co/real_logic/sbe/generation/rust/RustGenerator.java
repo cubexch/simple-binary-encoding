@@ -923,22 +923,19 @@ public class RustGenerator implements CodeGenerator
 
             assert 4 == groupHeaderTokenCount;
             indent(sb, level, "#[inline]\n");
+            indent(sb, level, "pub fn %s(self) -> Option<%2$s<Self>> {\n",
+                formatFunctionName(groupName), groupName);
+
             if (groupToken.version() > 0)
             {
-                indent(sb, level, "pub fn %s(self) -> Option<%2$s<Self>> {\n",
-                    formatFunctionName(groupName), groupName);
-
                 indent(sb, level + 1, "if self.acting_version < %d {\n", groupToken.version());
                 indent(sb, level + 2, "return None;\n");
                 indent(sb, level + 1, "}\n\n");
 
-                indent(sb, level + 1, "Some(%s::default().wrap(self))\n", groupName);
+                indent(sb, level + 1, "%s::default().wrap(self)\n", groupName);
             }
             else
             {
-                indent(sb, level, "pub fn %s(self) -> %2$s<Self> {\n",
-                    formatFunctionName(groupName), groupName);
-
                 indent(sb, level + 1, "%s::default().wrap(self)\n", groupName);
             }
             indent(sb, level, "}\n\n");
@@ -1456,10 +1453,13 @@ public class RustGenerator implements CodeGenerator
 
         // impl<'a, P> start
         indent(out, 1, "impl<'a, P> %s<P> where P: Reader<'a> + Default {\n", decoderName);
-        indent(out, 2, "pub fn wrap(mut self, parent: P, offset: usize) -> Self {\n");
+        indent(out, 2, "pub fn wrap(mut self, parent: P, offset: usize) -> Option<Self> {\n");
+        indent(out, 3, "if parent.get_buf().data.len() < offset + ENCODED_LENGTH {\n");
+        indent(out, 4, "return None;\n");
+        indent(out, 3, "}\n");
         indent(out, 3, "self.parent = Some(parent);\n");
         indent(out, 3, "self.offset = offset;\n");
-        indent(out, 3, "self\n");
+        indent(out, 3, "Some(self)\n");
         indent(out, 2, "}\n\n");
 
         // parent fn...
