@@ -56,6 +56,9 @@ class LibRsDef
         {
             indent(libRs, 0, "#![forbid(unsafe_code)]\n");
             indent(libRs, 0, "#![allow(clippy::upper_case_acronyms)]\n");
+            indent(libRs, 0, "#![allow(clippy::derivable_impls)]\n");
+            indent(libRs, 0, "#![allow(clippy::uninlined_format_args)]\n");
+            indent(libRs, 0, "#![allow(clippy::unnecessary_cast)]\n");
             indent(libRs, 0, "#![allow(non_camel_case_types)]\n");
             indent(libRs, 0, "use ::core::{convert::TryInto};\n\n");
 
