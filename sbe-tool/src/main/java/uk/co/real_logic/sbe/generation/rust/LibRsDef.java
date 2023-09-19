@@ -54,6 +54,7 @@ class LibRsDef
     {
         try (Writer libRs = outputManager.createOutput("lib"))
         {
+            indent(libRs, 0, "// @generated\n");
             indent(libRs, 0, "#![forbid(unsafe_code)]\n");
             indent(libRs, 0, "#![allow(clippy::upper_case_acronyms)]\n");
             indent(libRs, 0, "#![allow(clippy::derivable_impls)]\n");

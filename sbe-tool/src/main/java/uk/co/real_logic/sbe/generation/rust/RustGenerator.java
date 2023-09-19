@@ -151,6 +151,7 @@ public class RustGenerator implements CodeGenerator
 
             try (Writer out = outputManager.createOutput(codecModName))
             {
+                indent(out, 0, "// @generated\n");
                 indent(out, 0, "use crate::*;\n\n");
                 indent(out, 0, "pub use encoder::%sEncoder;\n", formatStructName(msgToken.name()));
                 indent(out, 0, "pub use decoder::%sDecoder;\n\n", formatStructName(msgToken.name()));
@@ -1049,6 +1050,7 @@ public class RustGenerator implements CodeGenerator
     {
         final Token beginToken = tokens.get(0);
         final String rustPrimitiveType = rustTypeName(beginToken.encoding().primitiveType());
+        indent(writer, 0, "// @generated\n");
         indent(writer, 0, "#[derive(Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]\n");
         indent(writer, 0, "pub struct %s(pub %s);\n", bitSetType, rustPrimitiveType);
         indent(writer, 0, "impl %s {\n", bitSetType);
@@ -1217,6 +1219,8 @@ public class RustGenerator implements CodeGenerator
             throw new IllegalArgumentException("No valid values provided for enum " + originalEnumName);
         }
 
+        indent(writer, 0, "// @generated\n");
+
         indent(writer, 0, "#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]\n");
         final String primitiveType = rustTypeName(messageBody.get(0).encoding().primitiveType());
         indent(writer, 0, "#[repr(%s)]\n", primitiveType);
@@ -1282,6 +1286,7 @@ public class RustGenerator implements CodeGenerator
 
         try (Writer out = outputManager.createOutput(compositeModName))
         {
+            indent(out, 0, "// @generated\n");
             indent(out, 0, "use crate::*;\n\n");
 
             indent(out, 0, "pub use encoder::%sEncoder;\n", formatStructName(compositeName));
