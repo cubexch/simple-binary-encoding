@@ -61,6 +61,11 @@ class LibRsDef
             indent(libRs, 0, "#![allow(clippy::uninlined_format_args)]\n");
             indent(libRs, 0, "#![allow(clippy::unnecessary_cast)]\n");
             indent(libRs, 0, "#![allow(non_camel_case_types)]\n");
+            // FIXME: we should probably not allow ambiguous glob reexports,
+            // but this was in the generated code prior to this change,
+            // so leaving it as-is for now.  Not sure where it got to;
+            // JAR file in core repo built off a different commit than the one in config.toml perhaps?
+            indent(libRs, 0, "#![allow(ambiguous_glob_reexports)]\n");
             indent(libRs, 0, "use ::core::{convert::TryInto};\n\n");
 
             final ArrayList<String> modules = new ArrayList<>();
