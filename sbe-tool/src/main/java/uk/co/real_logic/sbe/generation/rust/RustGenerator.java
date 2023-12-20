@@ -576,7 +576,7 @@ public class RustGenerator implements CodeGenerator
         }
         else
         {
-            indent(sb, level, "pub fn %s(self) -> %2$s<Self> {\n",
+            indent(sb, level, "pub fn %s(self) -> Option<%2$s<Self>> {\n",
                 decoderName,
                 decoderTypeName);
 
