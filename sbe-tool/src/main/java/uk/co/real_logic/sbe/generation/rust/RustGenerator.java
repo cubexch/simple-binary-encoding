@@ -1269,9 +1269,15 @@ public class RustGenerator implements CodeGenerator
     {
         for (final List<Token> tokens : ir.types())
         {
-            if (!tokens.isEmpty() && tokens.get(0).signal() == Signal.BEGIN_COMPOSITE)
+            if (!tokens.isEmpty())
             {
-                generateComposite(tokens, outputManager);
+                final Token firstToken = tokens.get(0);
+                // Special-case out varDataEncoding as its size can't be known at compile-time
+                // and it's inlined into its parent:
+                if (firstToken.signal() == Signal.BEGIN_COMPOSITE && !firstToken.name().equals("varDataEncoding"))
+                {
+                    generateComposite(tokens, outputManager);
+                }
             }
         }
     }
