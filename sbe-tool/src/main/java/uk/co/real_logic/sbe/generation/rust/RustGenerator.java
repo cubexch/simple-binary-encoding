@@ -1454,7 +1454,7 @@ public class RustGenerator implements CodeGenerator
         indent(out, 0, "pub mod decoder {\n");
         indent(out, 1, "use super::*;\n\n");
 
-        indent(out, 1, "#[derive(Debug, Default)]\n");
+        indent(out, 1, "#[derive(Clone, Copy, Debug, Default)]\n");
         indent(out, 1, "pub struct %s<P> {\n", decoderName);
         indent(out, 2, "parent: Option<P>,\n");
         indent(out, 2, "pub(crate) offset: usize,\n");
